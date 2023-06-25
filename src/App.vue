@@ -1,4 +1,5 @@
 <template lang="pug">
+//- defining layout of the page (Uppercase letters make layout to be fixed)
 q-layout(view="hHh Lpr lff" container style="height: 100vh")
   NavBar
   q-page-container.fit
@@ -16,6 +17,7 @@ export default {
 </script>
 
 <style lang="sass">
+// reset of browser's styles
 *
   margin: 0
   padding: 0
