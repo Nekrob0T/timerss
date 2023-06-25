@@ -1,5 +1,5 @@
 <template lang="pug">
-q-layout(view="hHh Lpr lff" container style="height: 300px")
+q-layout(view="hHh Lpr lff" container style="height: 100vh")
   NavBar
   q-page-container.fit
     RouterView

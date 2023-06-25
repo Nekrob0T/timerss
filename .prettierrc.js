@@ -4,5 +4,6 @@ module.exports = {
   "semi": true,
   "singleQuote": true,
   "trailingComma": "none",
-  "bracketSpacing": true
+  "bracketSpacing": true,
+  'vue-indent-script-and-style': true
 }
