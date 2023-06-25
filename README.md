@@ -1,24 +1,23 @@
-# timerss
+## Technology stack
 
-## Project setup
-```
-npm install
-```
+- vue@3 + Composition API (script setup/reactivity)
+- Pug
+- Sass (BEM)
+- TypeScript
+- Prettier
+- VueCLI
+- VueRouter
+- https://quasar.dev/
+- Comment all lines
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+#### Stage 1
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+- App
+- Routing
+- Header
+  - Title
+  - Menu Icon
+- Drawer (Sidebar)
+  - Settings (Empty Page)
+- Body with timers (Plus to add)
+- Timer StopWatch
