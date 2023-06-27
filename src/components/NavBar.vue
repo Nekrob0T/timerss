@@ -15,9 +15,13 @@ q-drawer(v-model="drawer" :width="200" :breakpoint="500" bordered :class="$q.dar
           | {{ menuItem.label }}
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { ref } from 'vue';
+import type { Ref } from 'vue';
 
+/* eslint-disable */
+// variable to define is sidebar visible or not
+const drawer: Ref<boolean> = ref(false);
 // list of links to iterate
 const menuList = [
   {
@@ -31,13 +35,4 @@ const menuList = [
     route: '/settings'
   }
 ];
-
-export default {
-  setup() {
-    return {
-      drawer: ref(false),
-      menuList
-    };
-  }
-};
 </script>

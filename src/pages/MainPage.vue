@@ -4,30 +4,16 @@ q-page(padding)
   RoundButton(icon="add" @click="addStopWatch")
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
+/* eslint-disable */
 import RoundButton from '@/components/UI/RoundButton.vue';
 import StopWatch from '@/components/timers/StopWatch.vue';
 import { ref } from 'vue';
 import type { Ref } from 'vue';
 
-export default {
-  components: {
-    RoundButton,
-    StopWatch
-  },
-  setup() {
-    // defining array with all timers which would used in the app
-    const timers: Ref<Array<object>> = ref([]);
+const timers: Ref<Array<object>> = ref([]);
 
-    // function to add a stopwatch (simple object because no options needed for it)
-    function addStopWatch(): void {
-      timers.value.push({});
-    }
-
-    return {
-      timers,
-      addStopWatch
-    };
-  }
-};
+function addStopWatch(): void {
+  timers.value.push({});
+}
 </script>

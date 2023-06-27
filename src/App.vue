@@ -6,14 +6,9 @@ q-layout(view="hHh Lpr lff" container style="height: 100vh")
     RouterView
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
+/* eslint-disable */
 import NavBar from '@/components/NavBar.vue';
-
-export default {
-  components: {
-    NavBar
-  }
-};
 </script>
 
 <style lang="sass">
