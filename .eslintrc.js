@@ -13,6 +13,8 @@ module.exports = {
     ecmaVersion: 2020
   },
   rules: {
+    'no-unused-vars': 'off',
+    'vue/no-unused-vars': 'off',
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'
   }

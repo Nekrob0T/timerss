@@ -21,3 +21,10 @@
   - Settings (Empty Page)
 - Body with timers (Plus to add)
 - Timer StopWatch
+
+### Stage 2
+
+- Fix comments
+- Implement all Timers
+- Implement edit / del Timers (... - on hover) - Creativity
+- Drag & Drop Timers

@@ -4,10 +4,12 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 const routes = [
   {
+    name: 'home',
     path: '/',
     component: MainPage
   },
   {
+    name: 'settings',
     path: '/settings',
     component: SettingsPage
   }
