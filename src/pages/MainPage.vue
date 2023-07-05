@@ -1,24 +1,28 @@
 <template lang="pug">
-  q-page(padding)
-    template(
-      v-for="timer in timers",
-      :key="timer.uniqueID")
+  q-page.flex(padding)
+    template(v-for="timer in timers")
       StopWatch.item(
+        v-if="timer.timerType === 'StopWatch'",
         :options="timer",
+        :key="timer.uniqueID",
+        @removeTimer="removeTimer(timer.uniqueID)")
+      Counter.item(
+        v-if="timer.timerType === 'Counter'",
+        :options="timer",
+        :key="timer.uniqueID",
         @removeTimer="removeTimer(timer.uniqueID)")
     q-btn.add(
       round,
       icon="add",
-      @click="addTimer")
+      @click="addTimer('Counter')")
 </template>
 
 <script lang="ts" setup>
   import StopWatch from '@/components/timers/StopWatch.vue';
-  import useUniqueId from '@/composable/uid';
+  import Counter from '@/components/timers/Counter.vue';
   import useTimers from '@/composable/timers';
 
   const { timers, addTimer, removeTimer } = useTimers();
-  const { uid } = useUniqueId();
 </script>
 
 <style lang="sass" scoped>

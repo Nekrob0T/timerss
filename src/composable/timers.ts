@@ -8,8 +8,8 @@ const timers = shallowRef<any[]>([]);
 const { uid } = useUniqueId();
 
 export default function useTimers(): any {
-  function addTimer() {
-    timers.value = [...timers.value, { uniqueID: uid(), timerType: '' }];
+  function addTimer(timerType: string): void {
+    timers.value = [...timers.value, { uniqueID: uid(), timerType }];
   }
 
   function removeTimer(id: string): void {
