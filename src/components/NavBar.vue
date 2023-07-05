@@ -36,7 +36,6 @@
   import { ref } from 'vue';
   import type { Ref } from 'vue';
 
-  /* eslint-disable */
   // variable to define is sidebar visible or not
   const drawer: Ref<boolean> = ref(false);
 

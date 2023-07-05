@@ -1,9 +1,7 @@
 <template lang="pug">
-  // TODO: Style must be in CSS class
-  q-layout(
+  q-layout#layout(
     view="hHh Lpr lff",
-    container,
-    style="height: 100vh")
+    container)
     NavBar
     q-page-container.fit
       RouterView
@@ -21,8 +19,6 @@
 </script>
 
 <style lang="sass">
-  *
-    margin: 0
-    padding: 0
-    box-sizing: border-box
+  #layout
+    height: 100vh
 </style>

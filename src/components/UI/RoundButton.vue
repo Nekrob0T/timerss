@@ -1,12 +1,11 @@
 <template lang="pug">
-q-btn(round class="btn")
-  slot
+  q-btn.btn(round)
+    slot
 </template>
 
 <style lang="sass" scoped>
-.btn
-  width: 200px
-  height: 200px
-  font-size: 40px
-  margin: 15px
+  .btn
+    width: 200px
+    height: 200px
+    font-size: 40px
 </style>
