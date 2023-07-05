@@ -3,27 +3,22 @@
     template(
       v-for="timer in timers",
       :key="timer.uniqueID")
-      StopWatch.item
+      StopWatch.item(
+        :options="timer",
+        @removeTimer="removeTimer(timer.uniqueID)")
     q-btn.add(
       round,
       icon="add",
-      @click="addStopWatch")
+      @click="addTimer")
 </template>
 
 <script lang="ts" setup>
   import StopWatch from '@/components/timers/StopWatch.vue';
-  import { shallowRef } from 'vue';
-  import type { Ref } from 'vue';
+  import useUniqueId from '@/composable/uid';
+  import useTimers from '@/composable/timers';
 
-  const timers: Ref<Array<object>> = shallowRef([]);
-
-  // const { timers, addTimer } = useTimers();
-
-  function addStopWatch(): void {
-    // TODO: try to generate unique ID.
-    // For type create Enum
-    timers.value = [...timers.value, { uniqueID: '', type: '' }];
-  }
+  const { timers, addTimer, removeTimer } = useTimers();
+  const { uid } = useUniqueId();
 </script>
 
 <style lang="sass" scoped>

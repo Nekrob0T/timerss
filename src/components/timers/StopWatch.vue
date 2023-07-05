@@ -1,19 +1,44 @@
 <template lang="pug">
-  //- TODO: Where is pause and reset?
   q-btn.timer(
     round,
-    @click="changeState")
+    @click="changeState",
+    @mouseenter="showButtons = true",
+    @mouseleave="showButtons = false")
     | {{ `${time}` }}
+    q-btn.reset(
+      v-show="showButtons",
+      round,
+      icon="rotate_right",
+      @click.stop="reset")
+    q-btn.delete(
+      v-show="showButtons",
+      round,
+      icon="clear",
+      @click.stop="deleteClick")
 </template>
 
 <script lang="ts" setup>
   import { ref } from 'vue';
   import type { Ref } from 'vue';
 
+  const props: any = defineProps({
+    options: {
+      type: Object,
+      required: true
+    }
+  });
+  const emit = defineEmits<{
+    (e: 'removeTimer', id: string): void;
+  }>();
+
+  function deleteClick() {
+    emit('removeTimer', props.uniqueId);
+  }
+
   // contains text with current stopwatch's time
   const time: Ref<string> = ref('00.000');
   // containing Date object with time when stopwatch was started
-  let timeStart: any = new Date();
+  let timeStart: any = null;
   // containing Date object with time when stopwatch was paused
   let timeStopped: any = null;
   // containing time between stop and current time
@@ -22,6 +47,8 @@
   let timer = 0;
   // to check if timer is stopped
   const isRunning: Ref<boolean> = ref(false);
+  // to check if reset and delete buttons must be shown
+  const showButtons: Ref<boolean> = ref(false);
 
   // start/stop on click
   function changeState(): void {
@@ -33,6 +60,11 @@
 
   // starting the timer
   function start(): void {
+    // creating Date object to save start of the stopwatch
+    if (timeStart === null) {
+      timeStart = new Date();
+    }
+
     if (timeStopped !== null) {
       // adding difference between current time and time when stopwatch was stopped
       stoppedDuration += new Date().getTime() - timeStopped;
@@ -44,28 +76,30 @@
 
   // updating the timer
   function clockRunning(): void {
-    const currentTime = new Date(),
-      /* except difference between current time and start time
-          we must subtract the time
-          when stopwatch was stopped in order to show proper time
-          even after a couple of minutes or hours after pause
-      */
-      timeElapsed = new Date(
-        currentTime.getTime() - timeStart - stoppedDuration
-      ),
-      /* we must count years by division on length of one year in milliseconds
-          because the Date object counting time from 1 Jan 1970
-      */
-      year = Math.floor(timeElapsed.getTime() / 31536000000),
-      /* same as for years, days calculated by division
-          because method getUTCDay() will return 1
-       */
-      day = Math.floor(timeElapsed.getTime() / 86400000),
-      // no problems with hours, minutes, seconds and milliseconds because they start from 0
-      hour = timeElapsed.getUTCHours(),
-      min = timeElapsed.getUTCMinutes(),
-      sec = timeElapsed.getUTCSeconds(),
-      ms = timeElapsed.getUTCMilliseconds();
+    const currentTime = new Date();
+    /* except difference between current time and start time
+        we must subtract the time
+        when stopwatch was stopped in order to show proper time
+        even after a couple of minutes or hours after pause
+    */
+    const timeElapsed = new Date(
+      currentTime.getTime() - timeStart - stoppedDuration
+    );
+    /* we must count years by division on length of one year in milliseconds
+        because the Date object counting time from 1 Jan 1970
+    */
+    const year = Math.floor(timeElapsed.getTime() / 31536000000);
+    /* same as for years, days calculated by division
+        because method getUTCDay() will return 1
+      ! important note: we should do modulus division to avoid situations
+        when days are not reset after one year has passed. example: 5y 1825d
+    */
+    const day = Math.floor(timeElapsed.getTime() / 86400000) % 365;
+    // no problems with hours, minutes, seconds and milliseconds because they start from 0
+    const hour = timeElapsed.getUTCHours();
+    const min = timeElapsed.getUTCMinutes();
+    const sec = timeElapsed.getUTCSeconds();
+    const ms = timeElapsed.getUTCMilliseconds();
 
     if (year > 0) {
       // pattern: 2000y 12d 23h
@@ -107,14 +141,17 @@
     }
   }
 
+  // resetting the timer to 00.000
   function reset(): void {
     clearInterval(timer);
     stoppedDuration = 0;
     timeStart = null;
     timeStopped = null;
+    isRunning.value = false;
     time.value = '00.000';
   }
 
+  // stopping the timer and adding current clock time as stop time
   function stop(): void {
     timeStopped = new Date();
     clearInterval(timer);
@@ -127,4 +164,20 @@
     height: 200px
     font-size: 35px
     text-transform: lowercase
+    position: relative
+    border: 4px solid orange
+    background: #000
+    color: #fff
+
+  .reset
+    position: absolute
+    top: 8px
+    left: 8px
+    background: #ffa500
+
+  .delete
+    position: absolute
+    top: 8px
+    right: 8px
+    background: red
 </style>
