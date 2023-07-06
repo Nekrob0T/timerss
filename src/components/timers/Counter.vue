@@ -3,7 +3,8 @@
     @mouseenter="showButtons = true",
     @mouseleave="showButtons = false")
     .counter
-      p {{ counter }}
+      p
+        | {{ counter }}
 
     q-btn.decrease(@click="counter--")
     q-btn.increase(@click="counter++")
