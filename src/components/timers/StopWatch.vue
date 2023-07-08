@@ -76,30 +76,30 @@
 
   // updating the timer
   function clockRunning(): void {
-    const currentTime = new Date();
+    const currentTime: Date = new Date();
     /* except difference between current time and start time
         we must subtract the time
         when stopwatch was stopped in order to show proper time
         even after a couple of minutes or hours after pause
     */
-    const timeElapsed = new Date(
+    const timeElapsed: Date = new Date(
       currentTime.getTime() - timeStart - stoppedDuration
     );
     /* we must count years by division on length of one year in milliseconds
         because the Date object counting time from 1 Jan 1970
     */
-    const year = Math.floor(timeElapsed.getTime() / 31536000000);
+    const year: number = Math.floor(timeElapsed.getTime() / 31536000000);
     /* same as for years, days calculated by division
         because method getUTCDay() will return 1
       ! important note: we should do modulus division to avoid situations
         when days are not reset after one year has passed. example: 5y 1825d
     */
-    const day = Math.floor(timeElapsed.getTime() / 86400000) % 365;
+    const day: number = Math.floor(timeElapsed.getTime() / 86400000) % 365;
     // no problems with hours, minutes, seconds and milliseconds because they start from 0
-    const hour = timeElapsed.getUTCHours();
-    const min = timeElapsed.getUTCMinutes();
-    const sec = timeElapsed.getUTCSeconds();
-    const ms = timeElapsed.getUTCMilliseconds();
+    const hour: number = timeElapsed.getUTCHours();
+    const min: number = timeElapsed.getUTCMinutes();
+    const sec: number = timeElapsed.getUTCSeconds();
+    const ms: number = timeElapsed.getUTCMilliseconds();
 
     if (year > 0) {
       // pattern: 2000y 12d 23h

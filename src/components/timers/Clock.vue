@@ -64,13 +64,13 @@
   const hourHand: Ref<HTMLElement> = ref() as Ref<HTMLElement>;
 
   function setClock(): void {
-    const currentTime = new Date();
+    const currentTime: Date = new Date();
     // for correct show of second hand
-    const secondsRatio = currentTime.getSeconds() / 60;
+    const secondsRatio: number = currentTime.getSeconds() / 60;
     // for correct show of minute hand (adding seconds ratio for smooth movement)
-    const minutesRatio = (secondsRatio + currentTime.getMinutes()) / 60;
+    const minutesRatio: number = (secondsRatio + currentTime.getMinutes()) / 60;
     // for correct show of hour hand (adding minutes ratio for smooth movement)
-    const hoursRatio = (minutesRatio + currentTime.getHours()) / 12;
+    const hoursRatio: number = (minutesRatio + currentTime.getHours()) / 12;
 
     // set rotation of hands
     setRotation(secondHand.value, secondsRatio);
@@ -91,7 +91,7 @@
   }
 
   // creating timer
-  const clock = setInterval(setClock, 1000);
+  const clock: number = setInterval(setClock, 1000);
   // when object is rendered call function once to place hands in right positions
   onMounted(() => setClock());
   // stop timer before deleting to avoid change rotation of deleted hands which causes errors

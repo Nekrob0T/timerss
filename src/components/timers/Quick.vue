@@ -35,31 +35,39 @@
     emit('removeTimer', props.uniqueId);
   }
 
-  // contains text with current countdown's time
-  const time: Ref<string> = ref('10:00');
+  // contains text with current quick timer's time
+  const time: Ref<string> = ref('00:05');
   // containing timer setInterval
   let timer = 0;
   // TODO: values from props
-  const seconds = 0;
-  const minutes = 10;
+  const seconds = 5;
+  const minutes = 0;
   const hours = 0;
   const days = 0;
-  // time from which we start countdown (default: 10min)
-  let startTime = new Date(
+  // time from which we start quick timer (default: 5sec)
+  let startTime: Date = new Date(
     (days * 86400 + hours * 3600 + minutes * 60 + seconds) * 1000
   );
 
   // to check if timer is stopped
   const isRunning: Ref<boolean> = ref(false);
+  // to check if timer is completed
+  let isCompleted = false;
   // to check if reset and delete buttons must be shown
   const showButtons: Ref<boolean> = ref(false);
 
-  // start/stop on click
+  // start/stop/reset on click
   function changeState(): void {
     isRunning.value = !isRunning.value;
-    if (isRunning.value) {
-      start();
-    } else stop();
+
+    // to restrict user to continue the timer's work after ending, reset the timer
+    if (isCompleted) {
+      reset();
+    } else {
+      if (isRunning.value) {
+        start();
+      } else stop();
+    }
   }
 
   // starting the timer
@@ -99,7 +107,10 @@
       time.value =
         min.toString().padStart(2, '0') + ':' + sec.toString().padStart(2, '0');
     } else {
-      reset();
+      // stop the timer and show the user that timer has finished
+      clearInterval(timer);
+      isCompleted = true;
+      time.value = 'completed';
     }
 
     startTime.setTime(startTime.getTime() - 1000);
@@ -112,7 +123,8 @@
       (days * 86400 + hours * 3600 + minutes * 60 + seconds) * 1000
     );
     isRunning.value = false;
-    time.value = '10:00';
+    isCompleted = false;
+    time.value = '00:05';
   }
 
   // stopping the timer and adding current clock time as stop time
@@ -128,7 +140,7 @@
     font-size: 35px
     text-transform: lowercase
     position: relative
-    border: 8px solid orange
+    border: 8px solid blue
     background: #000
     color: #fff
 

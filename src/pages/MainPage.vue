@@ -26,10 +26,15 @@
         :options="timer",
         :key="timer.uniqueID",
         @removeTimer="removeTimer(timer.uniqueID)")
+      Quick(
+        v-if="timer.timerType === 'Quick'",
+        :options="timer",
+        :key="timer.uniqueID",
+        @removeTimer="removeTimer(timer.uniqueID)")
     q-btn.add(
       round,
       icon="add",
-      @click="addTimer('CountUp')")
+      @click="addTimer('Quick')")
 </template>
 
 <script lang="ts" setup>
@@ -38,6 +43,7 @@
   import Clock from '@/components/timers/Clock.vue';
   import CountDown from '@/components/timers/CountDown.vue';
   import CountUp from '@/components/timers/CountUp.vue';
+  import Quick from '@/components/timers/Quick.vue';
   import useTimers from '@/composable/timers';
 
   const { timers, addTimer, removeTimer } = useTimers();

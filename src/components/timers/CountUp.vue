@@ -80,21 +80,21 @@
 
   // updating the timer
   function clockRunning(): void {
-    const currentTime = new Date();
+    const currentTime: Date = new Date();
     /* except difference between current time and start time
         we must subtract the time
         when CountUp was stopped in order to show proper time
         even after a couple of minutes or hours after pause
     */
-    const timeElapsed = new Date(
+    const timeElapsed: Date = new Date(
       currentTime.getTime() - timeStart - stoppedDuration
     );
     // days calculated by division because method getUTCDay() will return 4
-    const day = Math.floor(timeElapsed.getTime() / 86400000);
+    const day: number = Math.floor(timeElapsed.getTime() / 86400000);
     // no problems with hours, minutes, seconds and milliseconds because they start from 0
-    const hour = timeElapsed.getUTCHours();
-    const min = timeElapsed.getUTCMinutes();
-    const sec = timeElapsed.getUTCSeconds();
+    const hour: number = timeElapsed.getUTCHours();
+    const min: number = timeElapsed.getUTCMinutes();
+    const sec: number = timeElapsed.getUTCSeconds();
 
     if (day > 0) {
       // pattern: 12d 23:12
