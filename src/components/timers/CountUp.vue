@@ -18,6 +18,11 @@
 </template>
 
 <script lang="ts" setup>
+  /* 
+    ! this component same as StopWatch but can send messages at certain time 
+    TODO: add function to send messages  
+  */
+
   import { ref } from 'vue';
   import type { Ref } from 'vue';
 
@@ -35,20 +40,16 @@
     emit('removeTimer', props.uniqueId);
   }
 
-  // contains text with current countdown's time
-  const time: Ref<string> = ref('10:00');
+  // contains text with current CountUp's time
+  const time: Ref<string> = ref('00:00');
+  // containing Date object with time when CountUp was started
+  let timeStart: any = null;
+  // containing Date object with time when CountUp was paused
+  let timeStopped: any = null;
+  // containing time between stop and current time
+  let stoppedDuration = 0;
   // containing timer setInterval
   let timer = 0;
-  // TODO: values from props
-  const seconds = 0;
-  const minutes = 10;
-  const hours = 0;
-  const days = 0;
-  // time from which we start countdown (default: 10min)
-  let startTime = new Date(
-    (days * 86400 + hours * 3600 + minutes * 60 + seconds) * 1000
-  );
-
   // to check if timer is stopped
   const isRunning: Ref<boolean> = ref(false);
   // to check if reset and delete buttons must be shown
@@ -64,19 +65,36 @@
 
   // starting the timer
   function start(): void {
+    // creating Date object to save start of the CountUp
+    if (timeStart === null) {
+      timeStart = new Date();
+    }
+
+    if (timeStopped !== null) {
+      // adding difference between current time and time when CountUp was stopped
+      stoppedDuration += new Date().getTime() - timeStopped;
+    }
+
     timer = setInterval(clockRunning, 1000);
   }
 
   // updating the timer
   function clockRunning(): void {
-    /* days calculated by division
-        because method getUTCDay() will return 4
+    const currentTime = new Date();
+    /* except difference between current time and start time
+        we must subtract the time
+        when CountUp was stopped in order to show proper time
+        even after a couple of minutes or hours after pause
     */
-    const day = Math.floor(startTime.getTime() / 86400000);
+    const timeElapsed = new Date(
+      currentTime.getTime() - timeStart - stoppedDuration
+    );
+    // days calculated by division because method getUTCDay() will return 4
+    const day = Math.floor(timeElapsed.getTime() / 86400000);
     // no problems with hours, minutes, seconds and milliseconds because they start from 0
-    const hour = startTime.getUTCHours();
-    const min = startTime.getUTCMinutes();
-    const sec = startTime.getUTCSeconds();
+    const hour = timeElapsed.getUTCHours();
+    const min = timeElapsed.getUTCMinutes();
+    const sec = timeElapsed.getUTCSeconds();
 
     if (day > 0) {
       // pattern: 12d 23:12
@@ -94,29 +112,26 @@
         min.toString().padStart(2, '0') +
         ':' +
         sec.toString().padStart(2, '0');
-    } else if (min > 0 || sec > 0) {
+    } else {
       // pattern: 12:30
       time.value =
         min.toString().padStart(2, '0') + ':' + sec.toString().padStart(2, '0');
-    } else {
-      reset();
     }
-
-    startTime.setTime(startTime.getTime() - 1000);
   }
 
-  // resetting the timer to default
+  // resetting the timer to 00:00
   function reset(): void {
     clearInterval(timer);
-    startTime = new Date(
-      (days * 86400 + hours * 3600 + minutes * 60 + seconds) * 1000
-    );
+    stoppedDuration = 0;
+    timeStart = null;
+    timeStopped = null;
     isRunning.value = false;
-    time.value = '10:00';
+    time.value = '00:00';
   }
 
   // stopping the timer and adding current clock time as stop time
   function stop(): void {
+    timeStopped = new Date();
     clearInterval(timer);
   }
 </script>
@@ -128,7 +143,7 @@
     font-size: 35px
     text-transform: lowercase
     position: relative
-    border: 8px solid orange
+    border: 8px solid green
     background: #000
     color: #fff
 
