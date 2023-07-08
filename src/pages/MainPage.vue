@@ -16,16 +16,22 @@
         :options="timer",
         :key="timer.uniqueID",
         @removeTimer="removeTimer(timer.uniqueID)")
+      CountDown(
+        v-if="timer.timerType === 'CountDown'",
+        :options="timer",
+        :key="timer.uniqueID",
+        @removeTimer="removeTimer(timer.uniqueID)")
     q-btn.add(
       round,
       icon="add",
-      @click="addTimer('Clock')")
+      @click="addTimer('CountDown')")
 </template>
 
 <script lang="ts" setup>
   import StopWatch from '@/components/timers/StopWatch.vue';
   import Counter from '@/components/timers/Counter.vue';
   import Clock from '@/components/timers/Clock.vue';
+  import CountDown from '@/components/timers/CountDown.vue';
   import useTimers from '@/composable/timers';
 
   const { timers, addTimer, removeTimer } = useTimers();
