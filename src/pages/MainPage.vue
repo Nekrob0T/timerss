@@ -31,10 +31,15 @@
         :options="timer",
         :key="timer.uniqueID",
         @removeTimer="removeTimer(timer.uniqueID)")
+      Lap(
+        v-if="timer.timerType === 'Lap'",
+        :options="timer",
+        :key="timer.uniqueID",
+        @removeTimer="removeTimer(timer.uniqueID)")
     q-btn.add(
       round,
       icon="add",
-      @click="addTimer('Quick')")
+      @click="addTimer('Lap')")
 </template>
 
 <script lang="ts" setup>
@@ -44,6 +49,7 @@
   import CountDown from '@/components/timers/CountDown.vue';
   import CountUp from '@/components/timers/CountUp.vue';
   import Quick from '@/components/timers/Quick.vue';
+  import Lap from '@/components/timers/Lap.vue';
   import useTimers from '@/composable/timers';
 
   const { timers, addTimer, removeTimer } = useTimers();
