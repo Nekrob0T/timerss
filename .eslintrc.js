@@ -19,7 +19,7 @@ module.exports = {
     'vue/multi-word-component-names': [
       'error',
       {
-        ignores: ['Counter', 'Clock', 'Quick', 'Lap']
+        ignores: ['Counter', 'Clock', 'Quick', 'Lap', 'Pomodoro']
       }
     ],
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',

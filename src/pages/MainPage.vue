@@ -36,10 +36,15 @@
         :options="timer",
         :key="timer.uniqueID",
         @removeTimer="removeTimer(timer.uniqueID)")
+      Pomodoro(
+        v-if="timer.timerType === 'Pomodoro'",
+        :options="timer",
+        :key="timer.uniqueID",
+        @removeTimer="removeTimer(timer.uniqueID)")
     q-btn.add(
       round,
       icon="add",
-      @click="addTimer('Lap')")
+      @click="addTimer('Pomodoro')")
 </template>
 
 <script lang="ts" setup>
@@ -50,6 +55,7 @@
   import CountUp from '@/components/timers/CountUp.vue';
   import Quick from '@/components/timers/Quick.vue';
   import Lap from '@/components/timers/Lap.vue';
+  import Pomodoro from '@/components/timers/Pomodoro.vue';
   import useTimers from '@/composable/timers';
 
   const { timers, addTimer, removeTimer } = useTimers();
