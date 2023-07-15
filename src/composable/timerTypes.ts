@@ -7,5 +7,6 @@ export default {
   PomodoroTimer: 'Pomodoro',
   QuickTimer: 'Quick',
   StopWatchTimer: 'StopWatch',
-  IntervalTimer: 'Interval'
+  IntervalTimer: 'Interval',
+  SteppedTimer: 'Stepped'
 };

@@ -165,7 +165,7 @@
     font-size: 35px
     text-transform: lowercase
     position: relative
-    border: 8px solid orange
+    border: 8px solid maroon
     background: #000
     color: #fff
 
