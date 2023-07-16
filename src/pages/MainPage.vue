@@ -1,14 +1,48 @@
 <template lang="pug">
   q-page(padding)
+    //- .selectTimer
+    //-   select(v-model="selectedTimer")
+    //-     option(
+    //-       v-for="option in selectTimers",
+    //-       :key="option.value",
+    //-       :value="option.value")
+    //-       | {{ option.text }}
     .selectTimer
-      select(v-model="selectedTimer")
-        option(
-          v-for="option in selectTimers",
-          :key="option.value",
-          :value="option.value")
-          | {{ option.text }}
+      StopWatch(
+        draggable="true",
+        @dragstart="onDragStart($event, types.StopWatchTimer)")
+      Counter(
+        draggable="true",
+        @dragstart="onDragStart($event, types.CounterTimer)")
+      Clock(
+        draggable="true",
+        @dragstart="onDragStart($event, types.ClockTimer)")
+      CountDown(
+        draggable="true",
+        @dragstart="onDragStart($event, types.CountDownTimer)")
+      CountUp(
+        draggable="true",
+        @dragstart="onDragStart($event, types.CountUpTimer)")
+      Quick(
+        draggable="true",
+        @dragstart="onDragStart($event, types.QuickTimer)")
+      Lap(
+        draggable="true",
+        @dragstart="onDragStart($event, types.LapTimer)")
+      Pomodoro(
+        draggable="true",
+        @dragstart="onDragStart($event, types.PomodoroTimer)")
+      Interval(
+        draggable="true",
+        @dragstart="onDragStart($event, types.IntervalTimer)")
+      Stepped(
+        draggable="true",
+        @dragstart="onDragStart($event, types.SteppedTimer)")
 
-    .timers
+    .timers(
+      @drop="onDrop($event)",
+      @dragover.prevent,
+      @dragenter.prevent)
       template(v-for="timer in timers")
         StopWatch(
           v-if="timer.timerType === types.StopWatchTimer",
@@ -60,10 +94,6 @@
           :options="timer",
           :key="timer.uniqueID",
           @removeTimer="removeTimer(timer.uniqueID)")
-      q-btn.add(
-        round,
-        icon="add",
-        @click="addTimer(selectedTimer)")
 </template>
 
 <script lang="ts" setup>
@@ -84,7 +114,7 @@
 
   const selectedTimer: Ref<string> = ref(types.StopWatchTimer);
 
-  const selectTimers: Ref<Array<object>> = ref([
+  const selectTimers: Ref<object[]> = ref([
     { text: 'Stopwatch', value: types.StopWatchTimer },
     { text: 'Counter', value: types.CounterTimer },
     { text: 'Clock', value: types.ClockTimer },
@@ -97,6 +127,18 @@
     { text: 'Stepped', value: types.SteppedTimer }
   ]);
 
+  function onDragStart(e: DragEvent, timerType: string) {
+    // e?.dataTransfer.dropEffect = 'copy';
+    // e?.dataTransfer.effectAllowed = 'copy';
+    e.dataTransfer?.setData('timerType', timerType);
+  }
+
+  function onDrop(e: DragEvent) {
+    const timerType = e.dataTransfer?.getData('timerType');
+
+    addTimer(timerType);
+  }
+
   const { timers, addTimer, removeTimer } = useTimers();
 </script>
 
@@ -106,11 +148,22 @@
     height: 200px
     font-size: 40px
 
+  .selectTimer
+    display: flex
+    flex-direction: row
+    justify-content: space-around
+    overflow-y: hidden
+
+    *
+      width: 120px
+      height: 120px
+      font-size: 1em
+
   .timers
     display: flex
     flex-flow: row wrap
-
-    *
-      margin-top: 10px
-      margin-right: 10px
+    margin-top: 20px
+    gap: 10px 10px
+    min-height: 200px
+    min-width: 100%
 </style>

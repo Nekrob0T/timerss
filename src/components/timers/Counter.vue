@@ -29,7 +29,8 @@
     options: {
       type: Object,
       required: true
-    }
+    },
+    buttons: Boolean
   });
   const emit = defineEmits<{
     (e: 'removeTimer', id: string): void;
@@ -62,14 +63,11 @@
     border-radius: 50%
 
   .counter
-    height: 45%
     position: absolute
     text-align: center
-    top: 0
-    left: 0
-    bottom: 0
-    right: 0
-    margin: auto
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
 
   .decrease, .increase
     width: 50%

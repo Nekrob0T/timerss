@@ -5,6 +5,7 @@
     @mouseenter="showButtons = true",
     @mouseleave="showButtons = false")
     | {{ `${time}` }}
+
     q-btn.reset(
       v-show="showButtons",
       round,
