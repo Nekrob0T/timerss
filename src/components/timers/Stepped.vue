@@ -116,9 +116,6 @@
   // updating the timer
   // receive timeObj parameter then function knows which time to show
   function clockRunning(timeObj: Date, label: Ref<string>): void {
-    // updating time (interval or break)
-    timeObj.setTime(timeObj.getTime() - 1000);
-
     const hour: number = timeObj.getUTCHours();
     const min: number = timeObj.getUTCMinutes();
     const sec: number = timeObj.getUTCSeconds();
@@ -141,7 +138,7 @@
       clearInterval(totalTimeTimer);
       isRunning.value = false;
 
-      // change state of Pomodoro timer
+      // change state of Stepped timer
       if (isInterval.value) {
         // if it was work period we need to change it to break period
         isInterval.value = false;
@@ -160,6 +157,9 @@
         );
       }
     }
+
+    // updating time (interval or break)
+    timeObj.setTime(timeObj.getTime() - 1000);
   }
 
   // resetting the timer to default

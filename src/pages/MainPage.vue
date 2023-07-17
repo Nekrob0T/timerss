@@ -1,12 +1,5 @@
 <template lang="pug">
   q-page(padding)
-    //- .selectTimer
-    //-   select(v-model="selectedTimer")
-    //-     option(
-    //-       v-for="option in selectTimers",
-    //-       :key="option.value",
-    //-       :value="option.value")
-    //-       | {{ option.text }}
     .selectTimer
       StopWatch(
         draggable="true",
@@ -97,8 +90,6 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref } from 'vue';
-  import type { Ref } from 'vue';
   import StopWatch from '@/components/timers/StopWatch.vue';
   import Counter from '@/components/timers/Counter.vue';
   import Clock from '@/components/timers/Clock.vue';
@@ -112,28 +103,13 @@
   import types from '@/composable/timerTypes';
   import useTimers from '@/composable/timers';
 
-  const selectedTimer: Ref<string> = ref(types.StopWatchTimer);
-
-  const selectTimers: Ref<object[]> = ref([
-    { text: 'Stopwatch', value: types.StopWatchTimer },
-    { text: 'Counter', value: types.CounterTimer },
-    { text: 'Clock', value: types.ClockTimer },
-    { text: 'Countdown', value: types.CountDownTimer },
-    { text: 'Countup', value: types.CountUpTimer },
-    { text: 'Quick', value: types.QuickTimer },
-    { text: 'Lap', value: types.LapTimer },
-    { text: 'Pomodoro', value: types.PomodoroTimer },
-    { text: 'Interval', value: types.IntervalTimer },
-    { text: 'Stepped', value: types.SteppedTimer }
-  ]);
-
   function onDragStart(e: DragEvent, timerType: string) {
-    // e?.dataTransfer.dropEffect = 'copy';
-    // e?.dataTransfer.effectAllowed = 'copy';
+    // pass type of timer for correct show
     e.dataTransfer?.setData('timerType', timerType);
   }
 
   function onDrop(e: DragEvent) {
+    // receive type of timer for correct show
     const timerType = e.dataTransfer?.getData('timerType');
 
     addTimer(timerType);
@@ -152,7 +128,6 @@
     display: flex
     flex-direction: row
     justify-content: space-around
-    overflow-y: hidden
 
     *
       width: 120px

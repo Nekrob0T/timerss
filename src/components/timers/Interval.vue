@@ -140,7 +140,7 @@
       clearInterval(timer);
       clearInterval(totalTimeTimer);
 
-      // change state of Pomodoro timer
+      // change state of interval timer
       if (isInterval.value) {
         // if it was work period we need to change it to break period
         isInterval.value = false;
