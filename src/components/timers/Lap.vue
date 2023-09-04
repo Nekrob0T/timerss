@@ -4,7 +4,10 @@
     @click="changeState",
     @mouseenter="showButtons = true",
     @mouseleave="showButtons = false")
-    | {{ `${time}` }}
+    span.laplabel
+      | {{ `${timeLap}` }}
+    span
+      | {{ `${time}` }}
 
     q-btn.reset(
       v-show="showButtons",
@@ -36,62 +39,47 @@
     emit('removeTimer', props.uniqueId);
   }
 
-  // contains text with current stopwatch's time
+  // contains text with current Lap timer's time
   const time: Ref<string> = ref('00.000');
-  // containing Date object with time when stopwatch was started
+  // contains text with time when time was lapped
+  const timeLap: Ref<string> = ref('');
+  // contains Date object with current Lap timer time
   let timeStart: any = null;
-  // containing Date object with time when stopwatch was paused
-  let timeStopped: any = null;
-  // containing time between stop and current time
-  let stoppedDuration = 0;
-  // containing timer setInterval
+  // contains timer setInterval
   let timer = 0;
-  // to check if timer is stopped
-  const isRunning: Ref<boolean> = ref(false);
+  // to check if Lap timer is started
+  let isStarted = false;
   // to check if reset and delete buttons must be shown
   const showButtons: Ref<boolean> = ref(false);
 
   // start/stop on click
   function changeState(): void {
-    isRunning.value = !isRunning.value;
-    if (isRunning.value) {
+    if (isStarted) {
+      lap();
+    } else {
+      isStarted = true;
       start();
-    } else stop();
+    }
   }
 
   // starting the timer
   function start(): void {
-    // creating Date object to save start of the stopwatch
-    if (timeStart === null) {
-      timeStart = new Date();
-    }
+    timeStart = new Date();
 
-    if (timeStopped !== null) {
-      // adding difference between current time and time when stopwatch was stopped
-      stoppedDuration += new Date().getTime() - timeStopped;
-    }
-
-    // starting a new timer
     timer = setInterval(clockRunning, 10);
   }
 
   // updating the timer
   function clockRunning(): void {
     const currentTime: Date = new Date();
-    /* except difference between current time and start time
-        we must subtract the time
-        when stopwatch was stopped in order to show proper time
-        even after a couple of minutes or hours after pause
-    */
-    const timeElapsed: Date = new Date(
-      currentTime.getTime() - timeStart - stoppedDuration
-    );
+    /* find time difference between current and start */
+    const timeElapsed: Date = new Date(currentTime.getTime() - timeStart);
     /* we must count years by division on length of one year in milliseconds
         because the Date object counting time from 1 Jan 1970
     */
     const year: number = Math.floor(timeElapsed.getTime() / 31536000000);
     /* same as for years, days calculated by division
-        because method getUTCDay() will return 1
+        because method getUTCDay() will return 4
       ! important note: we should do modulus division to avoid situations
         when days are not reset after one year has passed. example: 5y 1825d
     */
@@ -145,17 +133,16 @@
   // resetting the timer to 00.000
   function reset(): void {
     clearInterval(timer);
-    stoppedDuration = 0;
     timeStart = null;
-    timeStopped = null;
-    isRunning.value = false;
+    isStarted = false;
+    timeLap.value = '';
     time.value = '00.000';
   }
 
-  // stopping the timer and adding current clock time as stop time
-  function stop(): void {
-    timeStopped = new Date();
-    clearInterval(timer);
+  // reset the timer and save current time as lap time
+  function lap(): void {
+    timeLap.value = time.value;
+    timeStart = new Date();
   }
 </script>
 
@@ -166,9 +153,16 @@
     font-size: 35px
     text-transform: lowercase
     position: relative
-    border: 8px solid maroon
+    border: 8px solid yellow
     background: #000
     color: #fff
+
+  .laplabel
+    position: absolute
+    left: 50%
+    top: 10%
+    transform: translateX(-50%)
+    font-size: 20px
 
   .reset
     position: absolute
